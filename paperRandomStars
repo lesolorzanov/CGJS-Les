@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Shapes</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script type="text/javascript" src="../../dist/paper-full.js"></script>
+    <script type="text/paperscript" canvas="canvas">
+
+        var points = [];
+
+	    function onMouseUp(event) {
+
+	    	var mountainsize=randn_bm()*50;
+			for (var i = 0; i < 500; i++) {
+				
+	        	//var point = new Point(500, 400) * Point.random();
+	        	var point = new Point(randn_bm()*mountainsize ,randn_bm()*mountainsize);
+	        	point = point + event.point;
+	        	points.push(point);
+
+	        	var path = new Path.Circle({
+				    center: [point.x, point.y],
+				    radius: 1,
+				    fillColor: 'black'
+				});
+				path.add(event.point);
+	        }
+
+	        
+		}
+
+
+        function randn_bm() {
+		    var u = 1 - Math.random(); // Subtraction to flip [0, 1) to (0, 1].
+		    var v = 1 - Math.random();
+		    return Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );
+		}
+
+
+    </script>
+</head>
+<body>
+    <canvas id="canvas" resize></canvas>
+</body>
+</html>
