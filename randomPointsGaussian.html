@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Shapes</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script type="text/javascript" src="../../dist/paper-full.js"></script>
+    <script type="text/paperscript" canvas="canvas">
+
+
+		var rectangle = new Rectangle(new Point(0,0), new Size(window.innerWidth, window.innerHeight));
+		var path = new Path.Rectangle(rectangle);
+		path.fillColor = 'black';
+        
+	    function onMouseUp(event) {
+
+	    	var points = [];
+
+	    	var mountainsize=randn_bm()*100;
+	    	if(mountainsize<0.0)mountainsize=mountainsize*-1;
+	    	//console.log(mountainsize);
+	    	
+	    	var mountaincount=Math.floor(mountainsize*50);
+	    	if(mountaincount<0.0)mountaincount=mountaincount*-1;
+	    	if(mountaincount>5000)mountaincount=5000;
+	    	//console.log(mountaincount);
+
+
+			for (var i = 0; i < mountaincount; i++) {
+				
+	        	//var point = new Point(500, 400) * Point.random();
+	        	var point = new Point(randn_bm()*mountainsize ,randn_bm()*mountainsize);
+	        	point = point + event.point;
+	        	points.push(point);	        	
+	        }
+
+	        var color=false;
+	        for (var i = 0; i < mountaincount; i++) {
+
+	        	if(color){
+	        		var vector=points[i]-event.point;
+	        		//console.log(vector.length/mountainsize);
+	        		var d=vector.length/mountainsize;
+	        		if(d<0.0) d=d*1;
+	        		if(d>1.0) d=1.0;
+	        		d=1-d;
+
+	        		var path = new Path.Circle({
+					    center: [points[i].x, points[i].y],
+					    radius: 1,
+					    fillColor: new Color(d)
+					});
+					path.add(points[i]);
+					//path.add(event.point);
+	        	}
+	        	else{
+
+			        var path = new Path.Circle({
+						    center: [points[i].x, points[i].y],
+						    radius: 1,
+						    fillColor: 'white'
+						});
+					path.add(points[i]);
+					//path.add(event.point);	        		
+	        	}
+
+			}
+	        
+		}
+
+
+        function randn_bm() {
+		    var u = 1 - Math.random(); // Subtraction to flip [0, 1) to (0, 1].
+		    var v = 1 - Math.random();
+		    return Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );
+		}
+
+
+    </script>
+</head>
+<body bgcolor="#0a3400">
+    <canvas id="canvas" resize></canvas>
+</body>
+</html>
